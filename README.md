@@ -1,78 +1,27 @@
-# next-template
+# ß-RomWriter for Logisim
+  a simple program to create Logisim's rom easly.
 
-A Next.js 13 template for building apps with Radix UI and Tailwind CSS.
 
-## Features
+You can download the precompiled version [here](https://github.com/AlessioGiacobbe/MicroprocessorRomWriterForLogisim/blob/master/MicroprocessorRomWriterForLogisim/precompiled/MicroprocessorRomWriterForLogisim.exe) or download the project and compile it using Visual Studio.
 
-- Radix UI Primitives
-- Tailwind CSS
-- Fonts with `@next/font`
-- Icons from [Lucide](https://lucide.dev)
-- Dark mode with `next-themes`
-- Automatic import sorting with `@ianvs/prettier-plugin-sort-imports`
+## How it works?
+You have to write the number of instruction of your MicroProcessor and the maximum number of Micro-instructions.
+<p align="center">
+  <img src="https://www.dropbox.com/s/f7rtuxwi6mprz62/screen1.PNG?raw=1"/>
+</p>
 
-## Tailwind CSS Features
+Then you Can select, from the combobox on the top-left, an instruction, for example `010` will select the third instruction.
+Once selected the instruction that you want to edit, you can write on the boxes only the bit that you want bring to `1`.
 
-- Class merging with `taiwind-merge`
-- Animation with `tailwindcss-animate`
-- Conditional classes with `clsx`
-- Variants with `class-variance-authority`
-- Automatic class sorting with `eslint-plugin-tailwindcss`
+For example if you want to write the instruction `1010` you can simply write `3 1`.
+<p align="center">
+  <img src="https://www.dropbox.com/s/0m4z6taw93b1i0w/screen2.PNG?raw=1"/>
+</p>
 
-## Import Sort
+Once you have wrote your rom, you can just press the export button, select your rom name and location, and save it, it will be saved in Logisim's ROM format.
 
-The starter comes with `@ianvs/prettier-plugin-sort-imports` for automatically sort your imports.
+On the left you can remove or add a pin, to all your micro-instructions, writing it into the box.
 
-### Input
+You can also Import existing Logisim's Roms and edit these.
 
-```tsx
-import * as React from "react"
-import Link from "next/link"
 
-import { siteConfig } from "@/config/site"
-import { buttonVariants } from "@/components/ui/button"
-import "@/styles/globals.css"
-import { twMerge } from "tailwind-merge"
-
-import { NavItem } from "@/types/nav"
-import { cn } from "@/lib/utils"
-```
-
-### Output
-
-```tsx
-import * as React from "react"
-// React is always first.
-import Link from "next/link"
-// Followed by next modules.
-import { twMerge } from "tailwind-merge"
-
-// Followed by third-party modules
-// Space
-import "@/styles/globals.css"
-// styles
-import { NavItem } from "@/types/nav"
-// types
-import { siteConfig } from "@/config/site"
-// config
-import { cn } from "@/lib/utils"
-// lib
-import { buttonVariants } from "@/components/ui/button"
-
-// components
-```
-
-### Class Merging
-
-The `cn` util handles conditional classes and class merging.
-
-### Input
-
-```ts
-cn("px-2 bg-slate-100 py-2 bg-slate-200")
-// Outputs `p-2 bg-slate-200`
-```
-
-## License
-
-Licensed under the [MIT license](https://github.com/shadcn/ui/blob/main/LICENSE.md).
