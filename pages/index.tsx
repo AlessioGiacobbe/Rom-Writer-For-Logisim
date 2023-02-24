@@ -8,6 +8,7 @@ import { Dialog, DialogContent, DialogHeader, } from "@/components/ui/dialog"
 import { DialogDescription, DialogTitle, DialogTrigger } from "@radix-ui/react-dialog"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import * as DialogPrimitive from '@radix-ui/react-dialog';
 import { useEffect, useRef, useState } from "react"
 import _ from 'lodash';
 import {
@@ -45,7 +46,6 @@ export default function IndexPage() {
     let reader = new FileReader()
     reader.onload = async (e) => {
       const text = (e.target.result).toString().replace("v2.0 raw", "").replace(/\n/g, " ")
-      console.log(text)
       parseNumbersArray(text.split(" "))
     };
     reader.readAsText(file)
@@ -56,34 +56,34 @@ export default function IndexPage() {
     let newArray = [...Array(instructionsNumber)].map(e => Array(maxMicroinstructions).fill(''));
 
     array.forEach(number => {
-      if (number.includes("*")) {
-        //value is compressed with 0*value
-        let splittedNumber = number.split("*")
-        let quantity = splittedNumber[0];
-        let value = splittedNumber[1];
-        _.range(quantity).forEach(_ => {
+      if (number != "" && number != " ") {
+        if (number.includes("*")) {
+          //value is compressed with 0*value
+          let splittedNumber = number.split("*")
+          let quantity = splittedNumber[0];
+          let value = splittedNumber[1];
+          _.range(quantity).forEach(_ => {
+            let instructionNumber = Math.floor(instructionsArrayOffset / maxMicroinstructions);
+            let microInstructionNumber = Math.floor(instructionsArrayOffset % maxMicroinstructions);
+            newArray[instructionNumber][microInstructionNumber] = value != 0 ? value : ""
+            instructionsArrayOffset++
+          });
+        } else {
           let instructionNumber = Math.floor(instructionsArrayOffset / maxMicroinstructions);
           let microInstructionNumber = Math.floor(instructionsArrayOffset % maxMicroinstructions);
-          newArray[instructionNumber][microInstructionNumber] = value != 0 ? value : ""
+          let numberAsInt = parseInt(number, 16)
+          let numberAsBinary = dec2bin(numberAsInt);
+          let valueAsNumbersString = "";
+
+          numberAsBinary.split('').reverse().forEach((character, index) => {
+            if (character == '1') {
+              valueAsNumbersString += (index + " ")
+            }
+          });
+
+          newArray[instructionNumber][microInstructionNumber] = valueAsNumbersString
           instructionsArrayOffset++
-        });
-      } else {
-        let instructionNumber = Math.floor(instructionsArrayOffset / maxMicroinstructions);
-        let microInstructionNumber = Math.floor(instructionsArrayOffset % maxMicroinstructions);
-        let numberAsInt = parseInt(number, 16)
-        let numberAsBinary = dec2bin(numberAsInt);
-        let valueAsNumbersString = "";
-
-        numberAsBinary.split('').reverse().forEach((character, index) => {
-          if (character == '1') {
-            valueAsNumbersString += (index + " ")
-          }
-        });
-
-        console.log(instructionsArrayOffset)
-        console.log(instructionNumber, microInstructionNumber, valueAsNumbersString)
-        newArray[instructionNumber][microInstructionNumber] = valueAsNumbersString
-        instructionsArrayOffset++
+        }
       }
     });
 
