@@ -41,6 +41,10 @@ export default function IndexPage() {
     return (dec >>> 0).toString(2);
   }
 
+  function export_rom() {
+
+  }
+
   function importFile(event) {
     let file = event.target.files[0];
     let reader = new FileReader()
@@ -90,7 +94,6 @@ export default function IndexPage() {
     setInstructionsArray(newArray)
   }
 
-
   function saveModal() {
     if (instructionsNumber > 0 && maxMicroinstructions > 0) {
       setDialogOpen(false)
@@ -134,17 +137,17 @@ export default function IndexPage() {
             <div className="grid align-bottom mt-3 max-w-sm items-center gap-3.5">
               <input type='file' id='file' ref={inputFile} onChange={importFile} style={{ display: 'none' }} />
               <Button onClick={() => inputFile.current.click()}>Importa ROM</Button>
-              <Button>Esporta ROM</Button>
+              <Button onClick={export_rom}>Esporta ROM</Button>
             </div>
           </div>
           <div className="col-span-6">
             {
-              selectedInstruction != null && instructionsArray != null && instructionsArray[selectedInstruction].slice(0, halfInstructionsArray).map((value, index) => <BinaryEditor key={index} index={index} value={value} setValue={setValueInInstructionsArray} />)
+              selectedInstruction != null && instructionsArray != null && instructionsArray[selectedInstruction].slice(0, halfInstructionsArray).map((value, index) => <BinaryEditor key={index} index={index} currentValue={value} setValue={setValueInInstructionsArray} />)
             }
           </div>
           <div className="col-span-6">
             {
-              selectedInstruction != null && instructionsArray != null && instructionsArray[selectedInstruction].slice(halfInstructionsArray).map((value, index) => <BinaryEditor key={index + halfInstructionsArray} index={index + halfInstructionsArray} value={value} setValue={setValueInInstructionsArray} />)
+              selectedInstruction != null && instructionsArray != null && instructionsArray[selectedInstruction].slice(halfInstructionsArray).map((value, index) => <BinaryEditor key={index + halfInstructionsArray} index={index + halfInstructionsArray} currentValue={value} setValue={setValueInInstructionsArray} />)
             }
           </div>
         </div>

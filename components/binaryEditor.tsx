@@ -9,41 +9,21 @@ import { Input } from "./ui/input"
 import { useEffect, useState } from "react"
 import _ from 'lodash';
 import { Label } from "./ui/label"
+import { numbers_string_to_number } from "@/lib/utils"
 
-function isNumeric(value) {
-  return /^-?\d+$/.test(value);
-}
 
-export function BinaryEditor({ index, value, setValue }) {
+export function BinaryEditor({ index, currentValue, setValue }) {
   const [numericValue, setNumericValue] = useState(0);
 
 
   useEffect(() => {
-    let numbersInString = value.split(" ");
-    numbersInString = _.uniq(numbersInString);
-
-    let numericValue = numbersInString.reduce(
-      (accumulator, currentValue) => {
-
-        if (isNumeric(currentValue)) {
-          let currentValueAsNumber = parseInt(currentValue)
-          if (currentValueAsNumber < 32 && currentValueAsNumber >= 0) {
-            let shiftedValue = (1 << currentValueAsNumber) >>> 0;
-            return accumulator + shiftedValue
-          }
-          return accumulator
-        }
-        return accumulator
-      },
-      0
-    )
-
-    setNumericValue(numericValue)
-  }, [value]);
+    let currentValueAsNumber = numbers_string_to_number(currentValue)
+    setNumericValue(currentValueAsNumber)
+  }, [currentValue]);
 
 
   return <div className="grid w-full mt-3 max-w-sm items-center gap-3.5">
     <Label htmlFor={"binary_editor" + index}>Microistruzione {index + 1} {numericValue > 0 && <>(0x{numericValue.toString(16)})</>}</Label>
-    <Input name={"binary_editor" + index} value={value} onChange={(e) => setValue(index, e.target.value)}></Input>
+    <Input name={"binary_editor" + index} value={currentValue} onChange={(e) => setValue(index, e.target.value)}></Input>
   </div>
 }
