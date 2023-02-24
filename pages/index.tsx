@@ -135,6 +135,9 @@ export default function IndexPage() {
 
   return (
     <Layout>
+      <Head>
+        <title>β Rom Writer</title>
+      </Head>
       <section className="container  grid items-center gap-6 pt-6 pb-8 md:py-10">
         <div className="grid  grid-rows-12 grid-flow-col gap-4">
           <div className="col-span-1 flex flex-1 flex-col justify-between min-h-3/4">
