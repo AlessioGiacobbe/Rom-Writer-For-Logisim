@@ -12,6 +12,9 @@ module.exports = {
         "2xl": "1360px",
       },
     },
+    minHeight: {
+      '1/2': '50vh',
+    },
     extend: {
       fontFamily: {
         sans: ["var(--font-sans)", ...fontFamily.sans],

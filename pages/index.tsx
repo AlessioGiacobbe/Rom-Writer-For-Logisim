@@ -112,20 +112,23 @@ export default function IndexPage() {
     <Layout>
       <section className="container  grid items-center gap-6 pt-6 pb-8 md:py-10">
         <div className="grid  grid-rows-12 grid-flow-col gap-4">
-          <div className="col-span-1 flex flex-1 flex-col justify-between">
+          <div className="col-span-1 flex flex-1 flex-col justify-between min-h-1/2">
             <div>
-              <Select value={selectedInstruction} onValueChange={(e) => setSelectedInsutrction(e)}>
-                <SelectTrigger className="w-[180px]">
-                  <SelectValue placeholder="Istruzione" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectGroup>
-                    {
-                      instructionsArray != null && instructionsArray.map((value, index) => <SelectItem key={index} value={index}>{index} (0x{index.toString(16)})</SelectItem>)
-                    }
-                  </SelectGroup>
-                </SelectContent>
-              </Select>
+              <div className="grid w-full mt-3 max-w-sm items-center gap-3.5">
+                <Label htmlFor="instruction_select">Istruzione</Label>
+                <Select name="instruction_select" value={selectedInstruction} onValueChange={(e) => setSelectedInsutrction(e)}>
+                  <SelectTrigger className="w-[180px]">
+                    <SelectValue placeholder="Istruzione" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectGroup>
+                      {
+                        instructionsArray != null && instructionsArray.map((value, index) => <SelectItem key={index} value={index}>{index} (0x{index.toString(16)})</SelectItem>)
+                      }
+                    </SelectGroup>
+                  </SelectContent>
+                </Select>
+              </div>
             </div>
 
             <div className="grid align-bottom mt-3 max-w-sm items-center gap-3.5">
