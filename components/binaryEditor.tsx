@@ -43,7 +43,7 @@ export function BinaryEditor({ index, value, setValue }) {
 
 
   return <div className="grid w-full mt-3 max-w-sm items-center gap-3.5">
-    <Label htmlFor={"binary_editor" + index}>Istruzione {index + 1} {numericValue > 0 && <>(0x{numericValue.toString(16)})</>}</Label>
+    <Label htmlFor={"binary_editor" + index}>Microistruzione {index + 1} {numericValue > 0 && <>(0x{numericValue.toString(16)})</>}</Label>
     <Input name={"binary_editor" + index} value={value} onChange={(e) => setValue(index, e.target.value)}></Input>
   </div>
 }

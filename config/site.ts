@@ -5,21 +5,17 @@ interface SiteConfig {
   description: string
   mainNav: NavItem[]
   links: {
-    twitter: string
     github: string
-    docs: string
   }
 }
 
 export const siteConfig: SiteConfig = {
-  name: "Rom Writer",
+  name: "Beta Rom Writer",
   description:
     "",
   mainNav: [
   ],
   links: {
-    twitter: "https://twitter.com/shadcn",
-    github: "https://github.com/shadcn/ui",
-    docs: "https://ui.shadcn.com",
+    github: "https://github.com/AlessioGiacobbe/RomWriterForLogisim",
   },
 }

@@ -36,11 +36,16 @@ export default function IndexPage() {
     setDialogOpen(true)
   }, [])
 
+  function dec2bin(dec) {
+    return (dec >>> 0).toString(2);
+  }
+
   function importFile(event) {
     let file = event.target.files[0];
     let reader = new FileReader()
     reader.onload = async (e) => {
-      const text = (e.target.result).toString().replace("v2.0 raw", "").replace("\n", "")
+      const text = (e.target.result).toString().replace("v2.0 raw", "").replace(/\n/g, " ")
+      console.log(text)
       parseNumbersArray(text.split(" "))
     };
     reader.readAsText(file)
@@ -65,7 +70,19 @@ export default function IndexPage() {
       } else {
         let instructionNumber = Math.floor(instructionsArrayOffset / maxMicroinstructions);
         let microInstructionNumber = Math.floor(instructionsArrayOffset % maxMicroinstructions);
-        newArray[instructionNumber][microInstructionNumber] = number
+        let numberAsInt = parseInt(number, 16)
+        let numberAsBinary = dec2bin(numberAsInt);
+        let valueAsNumbersString = "";
+
+        numberAsBinary.split('').reverse().forEach((character, index) => {
+          if (character == '1') {
+            valueAsNumbersString += (index + " ")
+          }
+        });
+
+        console.log(instructionsArrayOffset)
+        console.log(instructionNumber, microInstructionNumber, valueAsNumbersString)
+        newArray[instructionNumber][microInstructionNumber] = valueAsNumbersString
         instructionsArrayOffset++
       }
     });
