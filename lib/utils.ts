@@ -10,6 +10,10 @@ export function isNumeric(value) {
   return /^-?\d+$/.test(value);
 }
 
+export function isEmpty(str) {
+  return (!str || str.length === 0 );
+}
+
 export function numbers_string_to_number(numbersString) {
   let numbersInString = numbersString.split(" ");
   numbersInString = _.uniq(numbersInString);
@@ -30,4 +34,9 @@ export function numbers_string_to_number(numbersString) {
     0
   )
   return numericValue
+}
+
+export function numbers_string_to_hex_number(numberString) {
+  let converted = numbers_string_to_number(numberString)
+  return converted.toString(16)
 }

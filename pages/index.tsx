@@ -22,6 +22,7 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import { BinaryEditor } from "@/components/binaryEditor"
+import { isEmpty, numbers_string_to_hex_number, numbers_string_to_number } from "@/lib/utils"
 
 export default function IndexPage() {
   const [dialogOpen, setDialogOpen] = useState(false)
@@ -42,7 +43,28 @@ export default function IndexPage() {
   }
 
   function export_rom() {
+    let exportText = "v2.0 raw\n";
+    let emptyCount = 0;
+    instructionsArray.forEach(instruction => {
+      instruction.forEach(microInstruction => {
+        if (isEmpty(microInstruction)) {
+          emptyCount++
+        } else {
+          if (emptyCount > 0) {
+            exportText += `${emptyCount}*0 `
+            emptyCount = 0;
+          }
+          exportText += `${numbers_string_to_hex_number(microInstruction)} `
+        }
+      });
+    });
 
+    const blob = new Blob([exportText]);
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.download = "export";
+    link.href = url;
+    link.click();
   }
 
   function importFile(event) {
@@ -115,7 +137,7 @@ export default function IndexPage() {
     <Layout>
       <section className="container  grid items-center gap-6 pt-6 pb-8 md:py-10">
         <div className="grid  grid-rows-12 grid-flow-col gap-4">
-          <div className="col-span-1 flex flex-1 flex-col justify-between min-h-1/2">
+          <div className="col-span-1 flex flex-1 flex-col justify-between min-h-3/4">
             <div>
               <div className="grid w-full mt-3 max-w-sm items-center gap-3.5">
                 <Label htmlFor="instruction_select">Istruzione</Label>

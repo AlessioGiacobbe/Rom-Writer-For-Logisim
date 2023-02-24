@@ -14,6 +14,7 @@ module.exports = {
     },
     minHeight: {
       '1/2': '50vh',
+      '3/4': '75vh',
     },
     extend: {
       fontFamily: {
