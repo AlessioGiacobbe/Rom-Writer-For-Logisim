@@ -8,7 +8,8 @@ import { Dialog, DialogContent, DialogHeader, } from "@/components/ui/dialog"
 import { DialogDescription, DialogTitle, DialogTrigger } from "@radix-ui/react-dialog"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
+import _ from 'lodash';
 import {
   Select,
   SelectContent,
@@ -29,23 +30,66 @@ export default function IndexPage() {
   const [instructionsArray, setInstructionsArray] = useState(null)
   const [selectedInstruction, setSelectedInsutrction] = useState(null)
 
+  const inputFile = useRef(null)
 
   useEffect(() => {
     setDialogOpen(true)
   }, [])
 
-  function dec2bin(dec) {
-    return (dec >>> 0).toString(2);
+  function importFile(event) {
+    let file = event.target.files[0];
+    let reader = new FileReader()
+    reader.onload = async (e) => {
+      const text = (e.target.result).toString().replace("v2.0 raw", "").replace("\n", "")
+      parseNumbersArray(text.split(" "))
+    };
+    reader.readAsText(file)
   }
+
+  function parseNumbersArray(array) {
+    let instructionsArrayOffset = 0;
+    let newArray = [...Array(instructionsNumber)].map(e => Array(maxMicroinstructions).fill(''));
+
+    array.forEach(number => {
+      if (number.includes("*")) {
+        //value is compressed with 0*value
+        let splittedNumber = number.split("*")
+        let quantity = splittedNumber[0];
+        let value = splittedNumber[1];
+        _.range(quantity).forEach(_ => {
+          let instructionNumber = Math.floor(instructionsArrayOffset / maxMicroinstructions);
+          let microInstructionNumber = Math.floor(instructionsArrayOffset % maxMicroinstructions);
+          newArray[instructionNumber][microInstructionNumber] = value != 0 ? value : ""
+          instructionsArrayOffset++
+        });
+      } else {
+        let instructionNumber = Math.floor(instructionsArrayOffset / maxMicroinstructions);
+        let microInstructionNumber = Math.floor(instructionsArrayOffset % maxMicroinstructions);
+        newArray[instructionNumber][microInstructionNumber] = number
+        instructionsArrayOffset++
+      }
+    });
+
+    setInstructionsArray(newArray)
+  }
+
 
   function saveModal() {
     if (instructionsNumber > 0 && maxMicroinstructions > 0) {
       setDialogOpen(false)
-      let instructionsArray = [...Array(instructionsNumber)].map(e => Array(maxMicroinstructions).fill(3));
+      let instructionsArray = [...Array(instructionsNumber)].map(e => Array(maxMicroinstructions).fill(''));
       setSelectedInsutrction(0)
       setInstructionsArray(instructionsArray)
     }
   }
+
+  function setValueInInstructionsArray(microInstructionIndex, value) {
+    let currentInstructions = _.clone(instructionsArray);
+    currentInstructions[selectedInstruction][microInstructionIndex] = value;
+    setInstructionsArray(currentInstructions)
+  }
+
+  const halfInstructionsArray = instructionsArray ? Math.ceil(instructionsArray[selectedInstruction].length / 2) : null
 
   return (
     <Layout>
@@ -53,14 +97,14 @@ export default function IndexPage() {
         <div className="grid  grid-rows-12 grid-flow-col gap-4">
           <div className="col-span-1 flex flex-1 flex-col justify-between">
             <div>
-              <Select onValueChange={(e) => setSelectedInsutrction(e)}>
+              <Select value={selectedInstruction} onValueChange={(e) => setSelectedInsutrction(e)}>
                 <SelectTrigger className="w-[180px]">
                   <SelectValue placeholder="Istruzione" />
                 </SelectTrigger>
                 <SelectContent>
                   <SelectGroup>
                     {
-                      instructionsArray != null && instructionsArray.map((value, index) => <SelectItem value={index}>{index} (0x{index.toString(16)})</SelectItem>)
+                      instructionsArray != null && instructionsArray.map((value, index) => <SelectItem key={index} value={index}>{index} (0x{index.toString(16)})</SelectItem>)
                     }
                   </SelectGroup>
                 </SelectContent>
@@ -68,12 +112,19 @@ export default function IndexPage() {
             </div>
 
             <div className="grid align-bottom mt-3 max-w-sm items-center gap-3.5">
-              <Button>Importa ROM</Button>
-              <Button>Esporta ROM</Button></div>
+              <input type='file' id='file' ref={inputFile} onChange={importFile} style={{ display: 'none' }} />
+              <Button onClick={() => inputFile.current.click()}>Importa ROM</Button>
+              <Button>Esporta ROM</Button>
+            </div>
           </div>
-          <div className="col-span-11">
+          <div className="col-span-6">
             {
-              selectedInstruction != null && instructionsArray != null && instructionsArray[selectedInstruction].map((value, index) => <BinaryEditor />)
+              selectedInstruction != null && instructionsArray != null && instructionsArray[selectedInstruction].slice(0, halfInstructionsArray).map((value, index) => <BinaryEditor key={index} index={index} value={value} setValue={setValueInInstructionsArray} />)
+            }
+          </div>
+          <div className="col-span-6">
+            {
+              selectedInstruction != null && instructionsArray != null && instructionsArray[selectedInstruction].slice(halfInstructionsArray).map((value, index) => <BinaryEditor key={index + halfInstructionsArray} index={index + halfInstructionsArray} value={value} setValue={setValueInInstructionsArray} />)
             }
           </div>
         </div>
