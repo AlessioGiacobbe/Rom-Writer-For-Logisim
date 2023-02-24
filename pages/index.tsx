@@ -22,7 +22,7 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import { BinaryEditor } from "@/components/binaryEditor"
-import { isEmpty, numbers_string_to_hex_number, numbers_string_to_number } from "@/lib/utils"
+import { isEmpty, isNumeric, numbers_string_to_hex_number, numbers_string_to_number } from "@/lib/utils"
 
 export default function IndexPage() {
   const [dialogOpen, setDialogOpen] = useState(false)
@@ -30,7 +30,10 @@ export default function IndexPage() {
   const [maxMicroinstructions, setMaxMicroinstructions] = useState(16)
 
   const [instructionsArray, setInstructionsArray] = useState(null)
-  const [selectedInstruction, setSelectedInsutrction] = useState(null)
+  const [selectedInstruction, setSelectedInstruction] = useState(null)
+
+  const [globalAdd, setGlobalAdd] = useState(0)
+  const [globalRemove, setGlobalRemove] = useState(0)
 
   const inputFile = useRef(null)
 
@@ -40,6 +43,34 @@ export default function IndexPage() {
 
   function dec2bin(dec) {
     return (dec >>> 0).toString(2);
+  }
+
+  function global_add() {
+    let instructionsClone = _.clone(instructionsArray)
+    if (globalAdd < 32 && globalAdd >= 0) {
+      instructionsClone[selectedInstruction] = instructionsClone[selectedInstruction].map(microInstruction => {
+        if (!microInstruction.includes(globalAdd)) {
+          microInstruction += ` ${globalAdd.toString()}`
+          return microInstruction
+        }
+        return microInstruction
+      })
+      setInstructionsArray(instructionsClone)
+    }
+  }
+
+  function global_remove() {
+    let instructionsClone = _.clone(instructionsArray)
+    if (globalRemove < 32 && globalRemove >= 0) {
+      instructionsClone[selectedInstruction] = instructionsClone[selectedInstruction].map(microInstruction => {
+        if (microInstruction.includes(globalRemove.toString())) {
+          microInstruction = microInstruction.replace(globalRemove, "")
+          return microInstruction
+        }
+        return microInstruction
+      })
+      setInstructionsArray(instructionsClone)
+    }
   }
 
   function export_rom() {
@@ -120,7 +151,7 @@ export default function IndexPage() {
     if (instructionsNumber > 0 && maxMicroinstructions > 0) {
       setDialogOpen(false)
       let instructionsArray = [...Array(instructionsNumber)].map(e => Array(maxMicroinstructions).fill(''));
-      setSelectedInsutrction(0)
+      setSelectedInstruction(0)
       setInstructionsArray(instructionsArray)
     }
   }
@@ -144,8 +175,8 @@ export default function IndexPage() {
             <div>
               <div className="grid w-full mt-3 max-w-sm items-center gap-3.5">
                 <Label htmlFor="instruction_select">Istruzione</Label>
-                <Select name="instruction_select" value={selectedInstruction} onValueChange={(e) => setSelectedInsutrction(e)}>
-                  <SelectTrigger className="w-[180px]">
+                <Select name="instruction_select" value={selectedInstruction} onValueChange={(e) => setSelectedInstruction(e)}>
+                  <SelectTrigger className="w-full">
                     <SelectValue placeholder="Istruzione" />
                   </SelectTrigger>
                   <SelectContent>
@@ -156,6 +187,21 @@ export default function IndexPage() {
                     </SelectGroup>
                   </SelectContent>
                 </Select>
+              </div>
+            </div>
+
+            <div>
+              <div className="inline-block	w-full">
+                <Label className="my-2" htmlFor="global_add">Aggiungi a tutte le microistruzioni di {selectedInstruction ?? ""} (0x{selectedInstruction != null ? selectedInstruction.toString(16) : ""})</Label>
+                <Input className="my-2" name="global_add" value={globalAdd} type="number" onChange={(e) => isNumeric(e.target.value) ? setGlobalAdd(parseInt(e.target.value)) : {}}></Input>
+                <Button className="text-right my-2 float-right mb-5" onClick={global_add}>Aggiungi</Button>
+              </div>
+
+
+              <div >
+                <Label className="my-2" htmlFor="global_remove">Rimuovi da tutte le microistruzioni di {selectedInstruction ?? ""} (0x{selectedInstruction != null ? selectedInstruction.toString(16) : ""})</Label>
+                <Input className="my-2" name="global_remove" value={globalRemove} type="number" onChange={(e) => setGlobalRemove(parseInt(e.target.value))}></Input>
+                <Button className="text-right my-2 float-right mb-5" onClick={global_remove}>Rimuovi</Button>
               </div>
             </div>
 
