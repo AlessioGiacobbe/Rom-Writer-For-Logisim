@@ -10,7 +10,7 @@ interface SiteConfig {
 }
 
 export const siteConfig: SiteConfig = {
-  name: "Beta Rom Writer",
+  name: "Rom Writer",
   description:
     "",
   mainNav: [

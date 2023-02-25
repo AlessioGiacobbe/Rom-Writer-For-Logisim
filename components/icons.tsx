@@ -15,7 +15,7 @@ export const Icons = {
   laptop: Laptop,
   twitter: Twitter,
   logo: (props: LucideProps) => (
-    <svg width="19px" height="40px" opacity={0.8} viewBox="0 0 19 40" version="1.1" xmlns="http://www.w3.org/2000/svg" >
+    <svg width="19px" height="20px" opacity={0.8} viewBox="0 0 19 40" version="1.1" xmlns="http://www.w3.org/2000/svg" >
     <title>text2175</title>
     <g id="Page-1" stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
         <g id="Beta_uc_lc" fill="#FFFFFF" fillRule="nonzero">
