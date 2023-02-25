@@ -232,11 +232,11 @@ export default function IndexPage() {
             <DialogHeader>
               <DialogTitle>{t('size_modal_title')}</DialogTitle>
               <DialogDescription>
-                <div className="grid w-full mt-3 items-center gap-3.5">
+                <div className="grid w-full mt-3 items-center gap-3.5ub">
                   <Label htmlFor="instructions_number">{t('instructions_number')}</Label>
                   <Input value={instructionsNumber} onChange={(e) => setInstructionsNumber(Number(e.target.value))} type="number" id="instructions_number" placeholder="256" />
                 </div>
-                <div className="grid w-full mt-3 items-center gap-3.5">
+                <div className="grid w-full mt-3 items-center gap-3.5ub">
                   <Label htmlFor="max_microinstructions_number">{t('max_microinstructions_number')}</Label>
                   <Input value={maxMicroinstructions} onChange={(e) => setMaxMicroinstructions(Number(e.target.value))} type="number" id="max_microinstructions_number" placeholder="16" />
                 </div>

@@ -16,6 +16,6 @@ export const siteConfig: SiteConfig = {
   mainNav: [
   ],
   links: {
-    github: "https://github.com/AlessioGiacobbe/RomWriterForLogisim",
+    github: "https://github.com/AlessioGiacobbe/Rom-Writer-For-Logisim",
   },
 }
