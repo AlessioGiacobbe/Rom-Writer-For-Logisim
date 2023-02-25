@@ -93,11 +93,12 @@ export default function IndexPage() {
       });
     });
 
-    const blob = new Blob([exportText]);
+    const blob = new Blob([exportText], {type: "text/text;charset=utf-8"});
     const url = URL.createObjectURL(blob);
     const link = document.createElement("a");
     link.download = "export";
     link.href = url;
+    console.log(link.href);
     link.click();
   }
 

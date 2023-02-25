@@ -10,5 +10,8 @@
   "remove_from_all_microinstructions": "Remove from all microinstructions of",
   "remove": "Remove",
   "import_rom": "Import ROM",
-  "export_rom": "Export ROM"
+  "export_rom": "Export ROM",
+  "dark": "Dark",
+  "light": "Light",
+  "toggle_theme": "Toggle theme"
 }
