@@ -23,8 +23,11 @@ import {
 } from "@/components/ui/select"
 import { BinaryEditor } from "@/components/binaryEditor"
 import { isEmpty, isNumeric, numbers_string_to_hex_number, numbers_string_to_number } from "@/lib/utils"
+import useTranslation from 'next-translate/useTranslation'
 
 export default function IndexPage() {
+  const { t } = useTranslation('index')
+
   const [dialogOpen, setDialogOpen] = useState(false)
   const [instructionsNumber, setInstructionsNumber] = useState(256)
   const [maxMicroinstructions, setMaxMicroinstructions] = useState(16)
@@ -173,8 +176,8 @@ export default function IndexPage() {
         <div className="grid  grid-rows-12 grid-flow-col gap-4">
           <div className="col-span-1 flex flex-1 flex-col justify-between min-h-3/4">
             <div>
-              <div className="grid w-full mt-3 max-w-sm items-center gap-3.5">
-                <Label htmlFor="instruction_select">Istruzione</Label>
+              <div className="grid w-full mt-3 items-center gap-3.5">
+                <Label htmlFor="instruction_select">{t('instruction')}</Label>
                 <Select name="instruction_select" value={selectedInstruction} onValueChange={(e) => setSelectedInstruction(e)}>
                   <SelectTrigger className="w-full">
                     <SelectValue placeholder="Istruzione" />
@@ -192,23 +195,23 @@ export default function IndexPage() {
 
             <div>
               <div className="inline-block	w-full">
-                <Label className="my-2" htmlFor="global_add">Aggiungi a tutte le microistruzioni di {selectedInstruction ?? ""} (0x{selectedInstruction != null ? selectedInstruction.toString(16) : ""})</Label>
+                <Label className="my-2" htmlFor="global_add">{t('add_to_all_microinstructions')} {selectedInstruction ?? ""} (0x{selectedInstruction != null ? selectedInstruction.toString(16) : ""})</Label>
                 <Input className="my-2" name="global_add" value={globalAdd} type="number" onChange={(e) => isNumeric(e.target.value) ? setGlobalAdd(parseInt(e.target.value)) : {}}></Input>
-                <Button className="text-right my-2 float-right mb-5" onClick={global_add}>Aggiungi</Button>
+                <Button className="text-right my-2 float-right mb-5" onClick={global_add}>{t('add')}</Button>
               </div>
 
 
               <div >
-                <Label className="my-2" htmlFor="global_remove">Rimuovi da tutte le microistruzioni di {selectedInstruction ?? ""} (0x{selectedInstruction != null ? selectedInstruction.toString(16) : ""})</Label>
+                <Label className="my-2" htmlFor="global_remove">{t('remove_from_all_microinstructions')} {selectedInstruction ?? ""} (0x{selectedInstruction != null ? selectedInstruction.toString(16) : ""})</Label>
                 <Input className="my-2" name="global_remove" value={globalRemove} type="number" onChange={(e) => setGlobalRemove(parseInt(e.target.value))}></Input>
-                <Button className="text-right my-2 float-right mb-5" onClick={global_remove}>Rimuovi</Button>
+                <Button className="text-right my-2 float-right mb-5" onClick={global_remove}>{t('remove')}</Button>
               </div>
             </div>
 
-            <div className="grid align-bottom mt-3 max-w-sm items-center gap-3.5">
+            <div className="grid align-bottom mt-3  items-center gap-3.5">
               <input type='file' id='file' ref={inputFile} onChange={importFile} style={{ display: 'none' }} />
-              <Button onClick={() => inputFile.current.click()}>Importa ROM</Button>
-              <Button onClick={export_rom}>Esporta ROM</Button>
+              <Button onClick={() => inputFile.current.click()}>{t('import_rom')}</Button>
+              <Button onClick={export_rom}>{t('export_rom')}</Button>
             </div>
           </div>
           <div className="col-span-6">
@@ -227,17 +230,17 @@ export default function IndexPage() {
         >
           <DialogContent>
             <DialogHeader>
-              <DialogTitle>Quanto è grande la ROM?</DialogTitle>
+              <DialogTitle>{t('size_modal_title')}</DialogTitle>
               <DialogDescription>
-                <div className="grid w-full mt-3 max-w-sm items-center gap-3.5">
-                  <Label htmlFor="instructions_number">Numero istruzioni</Label>
+                <div className="grid w-full mt-3 items-center gap-3.5">
+                  <Label htmlFor="instructions_number">{t('instructions_number')}</Label>
                   <Input value={instructionsNumber} onChange={(e) => setInstructionsNumber(Number(e.target.value))} type="number" id="instructions_number" placeholder="256" />
                 </div>
-                <div className="grid w-full mt-3 max-w-sm items-center gap-3.5">
-                  <Label htmlFor="max_microinstructions_number">Numero massimo microistruzioni</Label>
+                <div className="grid w-full mt-3 items-center gap-3.5">
+                  <Label htmlFor="max_microinstructions_number">{t('max_microinstructions_number')}</Label>
                   <Input value={maxMicroinstructions} onChange={(e) => setMaxMicroinstructions(Number(e.target.value))} type="number" id="max_microinstructions_number" placeholder="16" />
                 </div>
-                <Button onClick={saveModal} className="mt-3">Salva</Button>
+                <Button onClick={saveModal} className="mt-5 text-right  float-right mb-5">{t('save')}</Button>
               </DialogDescription>
             </DialogHeader>
           </DialogContent>

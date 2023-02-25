@@ -1,0 +1,14 @@
+{
+  "save": "Save",
+  "size_modal_title": "How big is your ROM?",
+  "instructions_number": "Instructions quantity",
+  "max_microinstructions_number": "Microinstruction quantity for instruction",
+  "instruction": "Instruction",
+  "micro_instruction": "Microinstruction",
+  "add_to_all_microinstructions": "Add to all microinstruction of",
+  "add": "Add",
+  "remove_from_all_microinstructions": "Remove from all microinstructions of",
+  "remove": "Remove",
+  "import_rom": "Import ROM",
+  "export_rom": "Export ROM"
+}

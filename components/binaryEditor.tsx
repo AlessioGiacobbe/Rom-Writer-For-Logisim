@@ -10,9 +10,10 @@ import { useEffect, useState } from "react"
 import _ from 'lodash';
 import { Label } from "./ui/label"
 import { numbers_string_to_number } from "@/lib/utils"
-
+import useTranslation from 'next-translate/useTranslation'
 
 export function BinaryEditor({ index, currentValue, setValue }) {
+  const { t } = useTranslation('index')
   const [numericValue, setNumericValue] = useState(0);
 
 
@@ -22,8 +23,8 @@ export function BinaryEditor({ index, currentValue, setValue }) {
   }, [currentValue]);
 
 
-  return <div className="grid w-full mt-3 max-w-sm items-center gap-3.5">
-    <Label htmlFor={"binary_editor" + index}>Microistruzione {index + 1} {numericValue > 0 && <>(0x{numericValue.toString(16)})</>}</Label>
+  return <div className="grid w-full mt-3 items-center gap-3.5">
+    <Label htmlFor={"binary_editor" + index}>{t('micro_instruction')} {index + 1} {numericValue > 0 && <>(0x{numericValue.toString(16)})</>}</Label>
     <Input name={"binary_editor" + index} value={currentValue} className="w-full" onChange={(e) => setValue(index, e.target.value)}></Input>
   </div>
 }
