@@ -173,8 +173,8 @@ export default function IndexPage() {
         <title>β Rom Writer</title>
       </Head>
       <section className="container  grid items-center gap-6 pt-6 pb-8 md:py-10">
-        <div className="grid  grid-rows-12 grid-flow-col gap-4">
-          <div className="col-span-1 flex flex-1 flex-col justify-between min-h-3/4">
+        <div className="grid grid-cols-12  grid-flow-col gap-4">
+          <div className="col-span-3 flex flex-1 flex-col justify-between min-h-80vh">
             <div>
               <div className="grid w-full mt-3 items-center gap-3.5">
                 <Label htmlFor="instruction_select">{t('instruction')}</Label>
@@ -214,15 +214,17 @@ export default function IndexPage() {
               <Button onClick={export_rom}>{t('export_rom')}</Button>
             </div>
           </div>
-          <div className="col-span-6 ">
-            {
-              selectedInstruction != null && instructionsArray != null && instructionsArray[selectedInstruction].slice(0, halfInstructionsArray).map((value, index) => <BinaryEditor key={index} index={index} currentValue={value} setValue={setValueInInstructionsArray} />)
-            }
-          </div>
-          <div className="col-span-6 ">
-            {
-              selectedInstruction != null && instructionsArray != null && instructionsArray[selectedInstruction].slice(halfInstructionsArray).map((value, index) => <BinaryEditor key={index + halfInstructionsArray} index={index + halfInstructionsArray} currentValue={value} setValue={setValueInInstructionsArray} />)
-            }
+          <div className="max-h-80vh col-span-10 grid-cols-2 grid gap-4 pr-4 overflow-scroll">
+            <div>
+              {
+                selectedInstruction != null && instructionsArray != null && instructionsArray[selectedInstruction].slice(0, halfInstructionsArray).map((value, index) => <BinaryEditor key={index} index={index} currentValue={value} setValue={setValueInInstructionsArray} />)
+              }
+            </div>
+            <div>
+              {
+                selectedInstruction != null && instructionsArray != null && instructionsArray[selectedInstruction].slice(halfInstructionsArray).map((value, index) => <BinaryEditor key={index + halfInstructionsArray} index={index + halfInstructionsArray} currentValue={value} setValue={setValueInInstructionsArray} />)
+              }
+            </div>
           </div>
         </div>
         <Dialog
