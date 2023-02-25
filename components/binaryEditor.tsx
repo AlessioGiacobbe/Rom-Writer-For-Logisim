@@ -23,7 +23,7 @@ export function BinaryEditor({ index, currentValue, setValue }) {
   }, [currentValue]);
 
 
-  return <div className="grid w-full mt-3 items-center gap-3.5">
+  return <div className="grid w-full mt-3 items-center gap-3.5" >
     <Label htmlFor={"binary_editor" + index}>{t('micro_instruction')} {index + 1} {numericValue > 0 && <>(0x{numericValue.toString(16)})</>}</Label>
     <Input name={"binary_editor" + index} value={currentValue} className="w-full" onChange={(e) => setValue(index, e.target.value)}></Input>
   </div>

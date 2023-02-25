@@ -29,6 +29,7 @@ export function SiteHeader() {
                 <span className="sr-only">GitHub</span>
               </div>
             </Link>
+            <ThemeToggle />
           </nav>
         </div>
       </div>

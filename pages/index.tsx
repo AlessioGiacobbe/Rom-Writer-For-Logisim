@@ -4,7 +4,7 @@ import Link from "next/link"
 import { siteConfig } from "@/config/site"
 import { Layout } from "@/components/layout"
 import { Button, buttonVariants } from "@/components/ui/button"
-import { Dialog, DialogContent, DialogHeader, } from "@/components/ui/dialog"
+import { Dialog, DialogContent, DialogContentWithoutClose, DialogHeader, } from "@/components/ui/dialog"
 import { DialogDescription, DialogTitle, DialogTrigger } from "@radix-ui/react-dialog"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -214,12 +214,12 @@ export default function IndexPage() {
               <Button onClick={export_rom}>{t('export_rom')}</Button>
             </div>
           </div>
-          <div className="col-span-6">
+          <div className="col-span-6 ">
             {
               selectedInstruction != null && instructionsArray != null && instructionsArray[selectedInstruction].slice(0, halfInstructionsArray).map((value, index) => <BinaryEditor key={index} index={index} currentValue={value} setValue={setValueInInstructionsArray} />)
             }
           </div>
-          <div className="col-span-6">
+          <div className="col-span-6 ">
             {
               selectedInstruction != null && instructionsArray != null && instructionsArray[selectedInstruction].slice(halfInstructionsArray).map((value, index) => <BinaryEditor key={index + halfInstructionsArray} index={index + halfInstructionsArray} currentValue={value} setValue={setValueInInstructionsArray} />)
             }
@@ -228,7 +228,7 @@ export default function IndexPage() {
         <Dialog
           open={dialogOpen}
         >
-          <DialogContent>
+          <DialogContentWithoutClose>
             <DialogHeader>
               <DialogTitle>{t('size_modal_title')}</DialogTitle>
               <DialogDescription>
@@ -243,7 +243,7 @@ export default function IndexPage() {
                 <Button onClick={saveModal} className="mt-5 text-right  float-right mb-5">{t('save')}</Button>
               </DialogDescription>
             </DialogHeader>
-          </DialogContent>
+          </DialogContentWithoutClose>
         </Dialog>
       </section>
     </Layout>
