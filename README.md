@@ -1,5 +1,5 @@
 # ß-RomWriter for Logisim
-A simple website to create Logisim's rom easly, previosuly [BetaRomWriterForLogisim](https://github.com/AlessioGiacobbe/BetaRomWriterForLogisim).
+A simple website to create Logisim's rom easly, previously [BetaRomWriterForLogisim](https://github.com/AlessioGiacobbe/BetaRomWriterForLogisim).
 <p align="center">
 <img src="https://i.imgur.com/q11fALW.png"/>
 </p>
@@ -15,4 +15,4 @@ Then choose an instruction from the top-left select and start creating your rom 
 You can import and export ROMs into and from the website in a Logisim compatible format.
 
 ## Develop
-This website is build with React and Next.js upon the [shadcn/ui](https://ui.shadcn.com/) template, to start developing it just git clone the repo and run the project with `yarn dev`.
+This website is built with React and Next.js upon the [shadcn/ui](https://ui.shadcn.com/) template, to start developing it just git clone the repo and run the project with `yarn dev`.
