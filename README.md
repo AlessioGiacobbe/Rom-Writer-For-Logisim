@@ -1,5 +1,5 @@
 # ß-RomWriter for Logisim
-A simple website to create Logisim's rom easly.
+A simple website to create Logisim's rom easly, previosuly [BetaRomWriterForLogisim](https://github.com/AlessioGiacobbe/BetaRomWriterForLogisim).
 <p align="center">
 <img src="https://i.imgur.com/C0nvbz0.png"/>
 </p>
