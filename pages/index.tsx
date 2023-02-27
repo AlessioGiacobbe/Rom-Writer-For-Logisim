@@ -22,7 +22,7 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import { BinaryEditor } from "@/components/binaryEditor"
-import { isEmpty, isNumeric, numbers_string_to_hex_number, numbers_string_to_number } from "@/lib/utils"
+import { addOrRemove, dec2bin, isEmpty, isNumeric, numbers_string_to_hex_number, numbers_string_to_number } from "@/lib/utils"
 import useTranslation from 'next-translate/useTranslation'
 
 export default function IndexPage() {
@@ -34,6 +34,7 @@ export default function IndexPage() {
 
   const [instructionsArray, setInstructionsArray] = useState(null)
   const [selectedInstruction, setSelectedInstruction] = useState(null)
+  const [selectedMicroinstructions, setSelectedMicroinstructions] = useState([])
 
   const [globalAdd, setGlobalAdd] = useState(0)
   const [globalRemove, setGlobalRemove] = useState(0)
@@ -44,18 +45,27 @@ export default function IndexPage() {
     setDialogOpen(true)
   }, [])
 
-  function dec2bin(dec) {
-    return (dec >>> 0).toString(2);
+  function toggleSelectedMicrosintruction(microInstructionNumber) {
+    let selectedMicroinstructionsClone = _.clone(selectedMicroinstructions)
+    addOrRemove(selectedMicroinstructionsClone, microInstructionNumber)
+    setSelectedMicroinstructions(selectedMicroinstructionsClone)
   }
 
   function global_add() {
     let instructionsClone = _.clone(instructionsArray)
     if (globalAdd < 32 && globalAdd >= 0) {
-      instructionsClone[selectedInstruction] = instructionsClone[selectedInstruction].map(microInstruction => {
+      instructionsClone[selectedInstruction] = instructionsClone[selectedInstruction].map((microInstruction, index) => {
         if (!microInstruction.includes(globalAdd)) {
-          microInstruction += ` ${globalAdd.toString()}`
+          if (selectedMicroinstructions.length) {
+            if (selectedMicroinstructions.includes(index)) {
+              microInstruction += ` ${globalAdd.toString()}`
+            }
+          } else {
+            microInstruction += ` ${globalAdd.toString()}`
+          }
           return microInstruction
         }
+
         return microInstruction
       })
       setInstructionsArray(instructionsClone)
@@ -65,9 +75,15 @@ export default function IndexPage() {
   function global_remove() {
     let instructionsClone = _.clone(instructionsArray)
     if (globalRemove < 32 && globalRemove >= 0) {
-      instructionsClone[selectedInstruction] = instructionsClone[selectedInstruction].map(microInstruction => {
+      instructionsClone[selectedInstruction] = instructionsClone[selectedInstruction].map((microInstruction, index) => {
         if (microInstruction.includes(globalRemove.toString())) {
-          microInstruction = microInstruction.replace(globalRemove, "")
+          if (selectedMicroinstructions.length) {
+            if (selectedMicroinstructions.includes(index)) {
+              microInstruction = microInstruction.replace(globalRemove, "")
+            }
+          } else {
+            microInstruction = microInstruction.replace(globalRemove, "")
+          }
           return microInstruction
         }
         return microInstruction
@@ -93,7 +109,7 @@ export default function IndexPage() {
       });
     });
 
-    const blob = new Blob([exportText], {type: "text/text;charset=utf-8"});
+    const blob = new Blob([exportText], { type: "text/text;charset=utf-8" });
     const url = URL.createObjectURL(blob);
     const link = document.createElement("a");
     link.download = "export";
@@ -196,15 +212,43 @@ export default function IndexPage() {
 
             <div>
               <div className="inline-block	w-full">
-                <Label className="my-2" htmlFor="global_add">{t('add_to_all_microinstructions')} {selectedInstruction ?? ""} (0x{selectedInstruction != null ? selectedInstruction.toString(16) : ""})</Label>
-                <Input className="my-2" name="global_add" value={globalAdd} type="number" onChange={(e) => isNumeric(e.target.value) ? setGlobalAdd(parseInt(e.target.value)) : {}}></Input>
+                <Label className="my-2" htmlFor="global_add">{
+                  selectedMicroinstructions.length ?
+                    t('add_to_selected_microinstructions')
+                    :
+                    <>
+                      {t('add_to_all_microinstructions')} {selectedInstruction ?? ""} (0x{selectedInstruction != null ? selectedInstruction.toString(16) : ""})
+                    </>
+                }</Label>
+                <Input className="my-2" name="global_add" value={globalAdd} type="number" min="0" max="31" onChange={(e) => {
+                  if (isNumeric(e.target.value)) {
+                    let number = parseInt(e.target.value, 10)
+                    if (number >= 0) {
+                      setGlobalAdd(number)
+                    }
+                  }
+                }}></Input>
                 <Button className="text-right my-2 float-right mb-5" onClick={global_add}>{t('add')}</Button>
               </div>
 
 
               <div >
-                <Label className="my-2" htmlFor="global_remove">{t('remove_from_all_microinstructions')} {selectedInstruction ?? ""} (0x{selectedInstruction != null ? selectedInstruction.toString(16) : ""})</Label>
-                <Input className="my-2" name="global_remove" value={globalRemove} type="number" onChange={(e) => setGlobalRemove(parseInt(e.target.value))}></Input>
+                <Label className="my-2" htmlFor="global_remove">{
+                  selectedMicroinstructions.length ?
+                    t('remove_from_selected_microinstructions')
+                    :
+                    <>
+                      {t('remove_from_all_microinstructions')} {selectedInstruction ?? ""} (0x{selectedInstruction != null ? selectedInstruction.toString(16) : ""})
+                    </>
+                }</Label>
+                <Input className="my-2" name="global_remove" value={globalRemove} type="number" min="0" max="31" onChange={(e) => {
+                  if (isNumeric(e.target.value)) {
+                    let number = parseInt(e.target.value, 10)
+                    if (number >= 0) {
+                      setGlobalRemove(number)
+                    }
+                  }
+                }}></Input>
                 <Button className="text-right my-2 float-right mb-5" onClick={global_remove}>{t('remove')}</Button>
               </div>
             </div>
@@ -218,12 +262,12 @@ export default function IndexPage() {
           <div className="max-h-80vh col-span-10 grid-cols-2 grid gap-4 pr-4 overflow-scroll">
             <div>
               {
-                selectedInstruction != null && instructionsArray != null && instructionsArray[selectedInstruction].slice(0, halfInstructionsArray).map((value, index) => <BinaryEditor key={index} index={index} currentValue={value} setValue={setValueInInstructionsArray} />)
+                selectedInstruction != null && instructionsArray != null && instructionsArray[selectedInstruction].slice(0, halfInstructionsArray).map((value, index) => <BinaryEditor onSelect={toggleSelectedMicrosintruction} selectedMicroinstructions={selectedMicroinstructions} key={index} index={index} currentValue={value} setValue={setValueInInstructionsArray} />)
               }
             </div>
             <div>
               {
-                selectedInstruction != null && instructionsArray != null && instructionsArray[selectedInstruction].slice(halfInstructionsArray).map((value, index) => <BinaryEditor key={index + halfInstructionsArray} index={index + halfInstructionsArray} currentValue={value} setValue={setValueInInstructionsArray} />)
+                selectedInstruction != null && instructionsArray != null && instructionsArray[selectedInstruction].slice(halfInstructionsArray).map((value, index) => <BinaryEditor onSelect={toggleSelectedMicrosintruction} selectedMicroinstructions={selectedMicroinstructions} key={index + halfInstructionsArray} index={index + halfInstructionsArray} currentValue={value} setValue={setValueInInstructionsArray} />)
               }
             </div>
           </div>
@@ -237,11 +281,11 @@ export default function IndexPage() {
               <DialogDescription>
                 <div className="grid w-full mt-3 items-center gap-3.5ub">
                   <Label htmlFor="instructions_number">{t('instructions_number')}</Label>
-                  <Input value={instructionsNumber} onChange={(e) => setInstructionsNumber(Number(e.target.value))} type="number" id="instructions_number" placeholder="256" />
+                  <Input value={instructionsNumber} onChange={(e) => setInstructionsNumber(Number(e.target.value))} type="number" id="instructions_number" min="1" placeholder="256" />
                 </div>
                 <div className="grid w-full mt-3 items-center gap-3.5ub">
                   <Label htmlFor="max_microinstructions_number">{t('max_microinstructions_number')}</Label>
-                  <Input value={maxMicroinstructions} onChange={(e) => setMaxMicroinstructions(Number(e.target.value))} type="number" id="max_microinstructions_number" placeholder="16" />
+                  <Input value={maxMicroinstructions} min="1" onChange={(e) => setMaxMicroinstructions(Number(e.target.value))} type="number" id="max_microinstructions_number" placeholder="16" />
                 </div>
                 <Button onClick={saveModal} className="mt-5 text-right  float-right mb-5">{t('save')}</Button>
               </DialogDescription>

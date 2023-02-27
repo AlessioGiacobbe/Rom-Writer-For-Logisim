@@ -2,6 +2,8 @@ import {
   Laptop,
   LucideProps,
   Moon,
+  Circle,
+  CircleDot,
   SunMedium,
   Twitter,
   type Icon as LucideIcon,
@@ -13,6 +15,8 @@ export const Icons = {
   sun: SunMedium,
   moon: Moon,
   laptop: Laptop,
+  circle: Circle,
+  circleDot: CircleDot,
   twitter: Twitter,
   logo: (props: LucideProps) => (
     <svg width="19px" height="20px" opacity={0.8} viewBox="0 0 19 40" version="1.1" xmlns="http://www.w3.org/2000/svg" >

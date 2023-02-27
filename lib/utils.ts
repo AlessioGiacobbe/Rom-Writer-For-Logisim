@@ -14,6 +14,20 @@ export function isEmpty(str) {
   return (!str || str.length === 0 );
 }
 
+export function dec2bin(dec) {
+  return (dec >>> 0).toString(2);
+}
+
+export function addOrRemove(array, value) {
+  var index = array.indexOf(value);
+
+  if (index === -1) {
+      array.push(value);
+  } else {
+      array.splice(index, 1);
+  }
+}
+
 export function numbers_string_to_number(numbersString) {
   let numbersInString = numbersString.split(" ");
   numbersInString = _.uniq(numbersInString);

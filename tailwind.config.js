@@ -22,6 +22,10 @@ module.exports = {
       '3/4': '75vh',
       '80vh': '80vh'
     },
+    boxShadow: {
+      "cool-white-border-and-shadow": "rgb(255 255 255 / 20%) 0px 0px 0px 0.5px inset",
+      "cool-black-border-and-shadow": "rgb(0 0 0 / 20%) 0px 0px 0px 0.5px inset",
+    },
     extend: {
       fontFamily: {
         sans: ["var(--font-sans)", ...fontFamily.sans],
