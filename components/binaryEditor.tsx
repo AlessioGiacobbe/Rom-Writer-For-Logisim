@@ -25,7 +25,7 @@ export function BinaryEditor({ index, currentValue, setValue, onSelect, selected
 
   const isSelected = selectedMicroinstructions.includes(index)
 
-  return <div  className={`grid w-full ${isSelected && "dark:shadow-cool-white-border-and-shadow shadow-cool-black-border-and-shadow bg-[#00000005] dark:bg-[#FFFFFF05]"} p-2 rounded-lg mt-3 items-center gap-3.5`} >
+  return <div  className={`grid w-full transition-all duration-300 ${isSelected && "dark:shadow-cool-white-border-and-shadow shadow-cool-black-border-and-shadow bg-[#00000005] dark:bg-[#FFFFFF05]"} p-2 rounded-lg mt-3 items-center gap-3.5`} >
     <div className="grid grid-cols-12">
       <div className="col-span-11">
         <Label htmlFor={"binary_editor" + index}>{t('micro_instruction')} {index + 1} {numericValue > 0 && <>(0x{numericValue.toString(16)})</>}</Label>
