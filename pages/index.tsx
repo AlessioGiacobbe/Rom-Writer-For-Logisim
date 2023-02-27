@@ -259,7 +259,7 @@ export default function IndexPage() {
               <Button onClick={export_rom}>{t('export_rom')}</Button>
             </div>
           </div>
-          <div className="max-h-80vh col-span-10 grid-cols-2 grid gap-4 pr-4 overflow-scroll">
+          <div className="max-h-80vh col-span-10 grid-cols-2 grid gap-4 pr-4 overflow-scroll overflow-x-hidden">
             <div>
               {
                 selectedInstruction != null && instructionsArray != null && instructionsArray[selectedInstruction].slice(0, halfInstructionsArray).map((value, index) => <BinaryEditor onSelect={toggleSelectedMicrosintruction} selectedMicroinstructions={selectedMicroinstructions} key={index} index={index} currentValue={value} setValue={setValueInInstructionsArray} />)
