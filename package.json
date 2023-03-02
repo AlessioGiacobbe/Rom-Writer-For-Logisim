@@ -6,7 +6,8 @@
   "homepage": "./",
   "scripts": {
     "dev": "next dev",
-    "build": "yarn install && next build && next export",
+    "build": "yarn install",
+    "export": "next build && next export",
     "start": "next start",
     "lint": "next lint",
     "preview": "next build && next start",
