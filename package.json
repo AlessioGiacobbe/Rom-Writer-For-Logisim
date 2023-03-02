@@ -6,18 +6,13 @@
   "homepage": "./",
   "scripts": {
     "dev": "next dev",
-    "build": "yarn install",
-    "export": "next build && next export",
+    "build": "next build",
     "start": "next start",
     "lint": "next lint",
     "preview": "next build && next start",
-    "dist": "yarn run build && electron-builder --dir",
-    "electron-builder": "electron-builder --dir",
     "typecheck": "tsc --noEmit",
-    "electron": "electron .",
     "format:write": "prettier --write \"**/*.{ts,tsx,mdx}\" --cache",
-    "format:check": "prettier --check \"**/*.{ts,tsx,mdx}\" --cache",
-    "build-electron": "mkdir build/src && cp -r electron/. build/electron && cp -r src/shared/. build/src/shared"
+    "format:check": "prettier --check \"**/*.{ts,tsx,mdx}\" --cache"
   },
   "dependencies": {
     "@radix-ui/react-accessible-icon": "^1.0.1",
