@@ -1,8 +1,7 @@
-import nextTranslate from "next-translate-plugin"
-
 /** @type {import('next').NextConfig} */
-export default nextTranslate({
+export default {
   reactStrictMode: true,
+  assetPrefix: './',
   experimental: {
     fontLoaders: [
       {
@@ -11,4 +10,4 @@ export default nextTranslate({
       },
     ],
   },
-})
+}

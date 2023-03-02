@@ -23,7 +23,11 @@ import {
 } from "@/components/ui/select"
 import { BinaryEditor } from "@/components/binaryEditor"
 import { addOrRemove, dec2bin, isEmpty, isNumeric, numbers_string_to_hex_number, numbers_string_to_number } from "@/lib/utils"
-import useTranslation from 'next-translate/useTranslation'
+import {
+  useTranslation,
+  useLanguageQuery,
+  LanguageSwitcher,
+} from "next-export-i18n";
 
 export default function IndexPage() {
   const { t } = useTranslation('index')

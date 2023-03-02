@@ -10,8 +10,12 @@ import { useEffect, useState } from "react"
 import _ from 'lodash';
 import { Label } from "./ui/label"
 import { numbers_string_to_number } from "@/lib/utils"
-import useTranslation from 'next-translate/useTranslation'
 import { Icon } from "@radix-ui/react-select"
+import {
+  useTranslation,
+  useLanguageQuery,
+  LanguageSwitcher,
+} from "next-export-i18n";
 
 export function BinaryEditor({ index, currentValue, setValue, onSelect, selectedMicroinstructions }) {
   const { t } = useTranslation('index')

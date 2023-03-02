@@ -1,3 +1,9 @@
+@font-face {
+  font-family: "Inter-Medium";   /*Can be any text*/
+  src: local("InterMedium"),
+    url("../fonts/Inter-Medium.ttf") format("truetype");
+}
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
