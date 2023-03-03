@@ -1,6 +1,6 @@
 {
-  "name": "next-template",
-  "version": "0.0.1",
+  "name": "beta-rom-writer",
+  "version": "0.8.0",
   "private": true,
   "main": "electron/main.js",
   "homepage": "./",
@@ -15,7 +15,7 @@
     "format:check": "prettier --check \"**/*.{ts,tsx,mdx}\" --cache",
     "export": "next build && next export",
     "dist": "yarn run build && electron-builder --dir",
-    "electron-builder": "electron-builder --dir",
+    "electron-builder": "electron-builder",
     "build-electron": "mkdir build/src && cp -r electron/. build/electron && cp -r src/shared/. build/src/shared"
   },
   "dependencies": {
@@ -87,11 +87,6 @@
     "files": [
       "electron/main.js",
       "out/**/*"
-    ],
-    "publish": {
-      "provider": "github",
-      "repo": "electron-cra-example",
-      "owner": "none"
-    }
+    ]
   }
 }
